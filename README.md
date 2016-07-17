@@ -47,5 +47,5 @@ Testing
 -------
 
 This implementation is validated against the test vectors provided in:
-http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/ffx/aes-ffx-vectors.txt
-http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-38G.pdf
+* http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/ffx/aes-ffx-vectors.txt
+* http://csrc.nist.gov/groups/ST/toolkit/documents/Examples/FF1samples.pdf

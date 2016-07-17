@@ -9,7 +9,7 @@ class FFXRadixTest extends \PHPUnit_Framework_TestCase
     {
         $full_key = hex2bin('2b7e151628aed2a6abf7158809cf4f3cef4359d8d580aa4f7f036d6f04fc6a94');
         $tests = [
-            // http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-38G.pdf
+            // http://csrc.nist.gov/groups/ST/toolkit/documents/Examples/FF1samples.pdf
             ['AES-128','','0123456789','2433477484',10],
             ['AES-128','9876543210','0123456789','6124200773',10],
             ['AES-128','7777pqrs777','0123456789abcdefghi','a9tv40mll9kdu509eum',36],
