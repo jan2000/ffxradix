@@ -64,6 +64,8 @@ class FFXRadix
         $l = floor($n/2); // balanced split
         $r = 10; // Always use 10 rounds
 
+        if ($n < 1) return '';
+
         // This is taken out of the round function
         // P is static and thus its CBC-MAC can be precomputed and used as IV
         $P = "\x01". // VERS = 1
