@@ -1,0 +1,27 @@
+{
+    "name": "jan2000/ffxradix",
+    "description": "The Scheme FFX[radix] of the FFX Mode of Operation for Format-Preserving Encryption",
+    "keywords": ["ffx", "ffxradix", "feistel-based", "feistel-network", "encryption", "decryption",
+        "format-preserving", "fpe", "obfuscate"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jan Venekamp",
+            "email": "jan@venekamp.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-gmp": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Janv\\FFXRadix\\": "lib/"
+        }
+    }
+}
