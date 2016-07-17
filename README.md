@@ -1,7 +1,7 @@
 FFXRadix
 ========
 
-[![Build Status](https://travis-ci.org/jan2000/ffxradix.svg?branch=master)](https://travis-ci.org/janv/ffxradix)
+[![Build Status](https://travis-ci.org/jan2000/ffxradix.svg?branch=master)](https://travis-ci.org/jan2000/ffxradix)
 
 A PHP implementation of the FFX\[radix\] Scheme of The FFX Mode of Operation for Format-Preserving Encryption[1,2].
 
