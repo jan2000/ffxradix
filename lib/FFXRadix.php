@@ -25,9 +25,46 @@ if (!function_exists('\gmp_export')) {
  *
  * http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/ffx/ffx-spec2.pdf
  * http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/ffx/ffx-spec.pdf
+ * http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-38G.pdf
  */
 class FFXRadix
 {
+    protected $cipher;
+    protected $key_length;
+
+    /**
+     * FFXRadix constructor.
+     * @param string $cipher Underlying Block Cipher (see setCipher)
+     */
+    public function __construct($cipher = 'AES-128')
+    {
+        $this->setCipher($cipher);
+    }
+
+    /**
+     * Set Underlying Block Cipher
+     * @param string $cipher The cipher. Must be one of AES-128, AES-192, AES-256
+     * @return $this
+     */
+    public function setCipher($cipher)
+    {
+        switch ($cipher) {
+            case 'AES-128':
+                $this->key_length = 16;
+                break;
+            case 'AES-192':
+                $this->key_length = 24;
+                break;
+            case 'AES-256':
+                $this->key_length = 32;
+                break;
+            default:
+                throw new \LogicException("Unsupported cipher: $cipher");
+        }
+        $this->cipher = $cipher;
+        return $this;
+    }
+
     /**
      * Encrypt data using format-preserving encryption
      * @param string $input The plaintext data
@@ -38,7 +75,8 @@ class FFXRadix
      */
     public function encrypt($input, $radix, $key, $tweak = '')
     {
-        if (strlen($key) != 16) throw new \InvalidArgumentException('$key must be a string of 16 bytes');
+        if (strlen($key) != $this->key_length)
+            throw new \InvalidArgumentException("\$key must be a string of {$this->key_length} bytes");
         return $this->crypt(true, $key, $tweak, $input, $radix);
     }
 
@@ -52,7 +90,8 @@ class FFXRadix
      */
     public function decrypt($input, $radix, $key, $tweak = '')
     {
-        if (strlen($key) != 16) throw new \InvalidArgumentException('$key must be a string of 16 bytes');
+        if (strlen($key) != $this->key_length)
+            throw new \InvalidArgumentException("\$key must be a string of {$this->key_length} bytes");
         return $this->crypt(false, $key, $tweak, $input, $radix);
     }
 
@@ -77,7 +116,7 @@ class FFXRadix
             $this->fixedLength(gmp_export(gmp_init($n)), 4). // n4
             $this->fixedLength(gmp_export(gmp_init(strlen($T))), 4)  // t4
         ;
-        $iv = openssl_encrypt($P, 'AES-128-ECB', $K, \OPENSSL_RAW_DATA | \OPENSSL_ZERO_PADDING);
+        $iv = openssl_encrypt($P, $this->cipher.'-ECB', $K, \OPENSSL_RAW_DATA | \OPENSSL_ZERO_PADDING);
 
         $A = substr($X, 0, $l);
         $B = substr($X, $l);
@@ -114,12 +153,12 @@ class FFXRadix
 
         // Y = CBC-MAC_K(P·Q)
         // CBC-MAC is the same as the last block of cipher text of CBC mode and a zero iv (the iv used here is P')
-        $Y = substr(openssl_encrypt($Q, 'AES-128-CBC', $K, \OPENSSL_RAW_DATA | \OPENSSL_ZERO_PADDING, $iv), -16);
+        $Y = substr(openssl_encrypt($Q, $this->cipher.'-CBC', $K, \OPENSSL_RAW_DATA | \OPENSSL_ZERO_PADDING, $iv), -16);
         // Y = first d + 4 bytes of (Y · AES_K(Y ⊕ [1]16) · AES_K(Y ⊕ [2]16) · AES_K(Y ⊕ [3]16)·· )
         $E = '';
         for ($j = 1; $j * 16 < $d + 4; $j++) {
             $J = $this->fixedLength(gmp_export(gmp_init($j)), 16);
-            $E .= openssl_encrypt($Y ^ $J, 'AES-128-ECB', $K, \OPENSSL_RAW_DATA | \OPENSSL_ZERO_PADDING);
+            $E .= openssl_encrypt($Y ^ $J, $this->cipher.'-ECB', $K, \OPENSSL_RAW_DATA | \OPENSSL_ZERO_PADDING);
         }
         $Y = substr($Y.$E, 0, $d+4);
 

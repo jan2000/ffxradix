@@ -3,7 +3,7 @@ require __DIR__.'/vendor/autoload.php';
 
 use Janv\FFXRadix\FFXRadix;
 
-// Key must be a 16 byte long
+// Key must be a 16 byte long string if AES-128 (default) is used
 $key = hex2bin('00000000000000000000000000000000');
 // Tweak can be anything
 $tweak = hex2bin('0123456789abcdef');

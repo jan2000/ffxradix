@@ -2,7 +2,7 @@
     "name": "jan2000/ffxradix",
     "description": "The Scheme FFX[radix] of the FFX Mode of Operation for Format-Preserving Encryption",
     "keywords": ["ffx", "ffxradix", "feistel-based", "feistel-network", "encryption", "decryption",
-        "format-preserving", "fpe", "obfuscate"],
+        "format-preserving", "fpe", "obfuscate", "ff1", "nist", "800-38G", "aes", "id obfuscation", "optimus"],
     "type": "library",
     "license": "MIT",
     "authors": [
